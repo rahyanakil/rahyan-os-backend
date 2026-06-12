@@ -25,7 +25,10 @@ app.use(helmet({
 }))
 
 const ALLOWED_ORIGINS = [
-  process.env.FRONTEND_URL,
+  ...(process.env.FRONTEND_URL || '').split(',').map((s) => s.trim()),
+  'https://www.rahyanshamsi.com',
+  'https://rahyanshamsi.com',
+  'https://rahyanakil.vercel.app',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
 ].filter(Boolean)
@@ -34,7 +37,7 @@ const corsOptions = {
   origin(origin, cb) {
     if (!origin) return cb(null, true)
     if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true)
-    return cb(new Error(`CORS blocked: ${origin}`))
+    return cb(null, false)
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
