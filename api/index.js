@@ -58,6 +58,24 @@ const limiter = rateLimit({
 })
 app.use('/api', limiter)
 
+app.get(['/', '/api'], (req, res) => {
+  res.json({
+    success: true,
+    name: 'RAHYAN-OS API',
+    status: 'online',
+    docs: {
+      health: '/api/health',
+      auth: '/api/v1/auth',
+      profile: '/api/v1/profile',
+      skills: '/api/v1/skills',
+      projects: '/api/v1/projects',
+      career: '/api/v1/career',
+      upload: '/api/v1/admin/upload',
+    },
+    ts: new Date().toISOString(),
+  })
+})
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', ts: new Date().toISOString() })
 })
