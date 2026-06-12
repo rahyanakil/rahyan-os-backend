@@ -16,9 +16,16 @@ const uploadRoutes = require('../src/modules/upload/upload.routes')
 
 const app = express()
 
-connectDB()
-
 app.set('trust proxy', 1)
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDB()
+    next()
+  } catch (err) {
+    next(err)
+  }
+})
 
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
